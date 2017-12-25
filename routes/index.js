@@ -43,8 +43,8 @@ module.exports = function(app) {
         // var salesNumber = request.body.salesNumber;
         var url = 'http://' + request.headers.host + '/outbound/' + encodeURIComponent(config.twilioNumber)
         // var url = 'http://' + request.headers.host + '/outbound'
-        console.log('url is', url)
-        console.log('phoneNumber is', request.body.phoneNumber)
+        // console.log('url is', url)
+        // console.log('phoneNumber is', request.body.phoneNumber)
         var options = {
             to: request.body.phoneNumber,
             from: config.twilioNumber,
@@ -57,7 +57,7 @@ module.exports = function(app) {
           .then((message) => {
             console.log(message.responseText);
             response.send({
-                message: 'Thank you! We will be calling you shortly.',
+                message: 'Thank you! Chi-bot will be calling you shortly.',
             });
           })
           .catch((error) => {
@@ -67,16 +67,30 @@ module.exports = function(app) {
     });
 
     // Return TwiML instuctions for the outbound call
-    app.post('/outbound/:salesNumber', function(request, response) {
-        var salesNumber = request.params.salesNumber;
-        var twimlResponse = new VoiceResponse();
-        console.log('got to outbound route')
-        twimlResponse.say('Thanks for contacting our sales department. Our ' +
-                          'next available representative will take your call. ',
-                          { voice: 'alice' });
+    app.post('/outbound/:twilioNumber', function(request, response) {
+        const twimlResponse = new VoiceResponse();
+        const timeout = 4;  
+        // console.log('got to outbound route')
+        twimlResponse.say("Welcome to Chi's Twilio testing app");
+        response.gather({
+          hints: 'yes, no',
+          input: 'speech',
+          timeout: timeout,
+          action:'/saidSomething'
+        }).say('Please say Yes, or, No.')
+        twimlResponse.say(`No response given in ${timeout} seconds `);
+        twimlResponse.hangup();
+        // twimlResponse.redirect({
+        //   method:'POST'
+        // }, '/outbound/123')
 
-        twimlResponse.dial(salesNumber);
-
+        console.log("outbound", twimlResponse.toString());
         response.send(twimlResponse.toString());
-    });
+      });
+      
+      app.post('/saidSomething', (req, res) => {
+        console.log('req.SpeechResult is', req.SpeechResult)
+        console.log(req)
+        res.end(req.SpeechResult)
+    })
 };
