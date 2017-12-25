@@ -89,13 +89,13 @@ module.exports = function(app) {
       });
       
       app.post('/saidSomething', (req, res) => {
-        console.log(req.body.SpeechResult)
+        // console.log(req.body.SpeechResult)
         var twimlResponse = new VoiceResponse();
         const yesOrNo = req.body.SpeechResult;  
         if (yesOrNo === 'No.'){
           console.log('oh no')
           twimlResponse.say('You said no, how disappointing');
-        } else if (yesOrNo = 'Yes.'){
+        } else if (yesOrNo === 'Yes.'){
           console.log('oh yes')
           twimlResponse.say(`You said yes, how exciting! Yay yay yay!`);
         } else {
