@@ -69,9 +69,9 @@ module.exports = function(app) {
     // Return TwiML instuctions for the outbound call
     app.post('/outbound/:twilioNumber', function(req, res) {
         var twimlResponse = new VoiceResponse();
-        const timeout = 4;  
+        const timeout = 2;  
         // console.log('got to outbound route')
-        twimlResponse.say("Hello There! Chee-bot is excited to talk to you, are you excited?");
+        twimlResponse.say("Hello There! Chee-bot is excited to talk to you.  Are you excited?");
         twimlResponse.gather({
           hints: 'yes, no',
           input: 'speech',
