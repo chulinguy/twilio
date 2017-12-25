@@ -22,7 +22,7 @@ var client = twilio(config.accountSid, config.authToken);
 
 // Configure application routes
 module.exports = function(app) {
-
+  var twimlResponse = new VoiceResponse();
     // Express static file middleware - serves up JS, CSS, and images from the
     // "public" directory where we started our webapp process
     // app.use(express.static(path.join(process.cwd(), 'public')));
@@ -68,7 +68,7 @@ module.exports = function(app) {
 
     // Return TwiML instuctions for the outbound call
     app.post('/outbound/:twilioNumber', function(request, response) {
-        var twimlResponse = new VoiceResponse();
+        // var twimlResponse = new VoiceResponse();
         const timeout = 4;  
         // console.log('got to outbound route')
         twimlResponse.say("Chi-bot is excited to talk to you, are you excited?");
@@ -76,8 +76,9 @@ module.exports = function(app) {
           hints: 'yes, no',
           input: 'speech',
           timeout: timeout,
-          // action:'/saidSomething'
+          action:'/saidSomething'
         }).say('Please say Yes, or, No.')
+        console.log('not showing')
         twimlResponse.say(`No response given in ${timeout} seconds `);
         twimlResponse.hangup();
         // twimlResponse.redirect({
@@ -90,7 +91,7 @@ module.exports = function(app) {
       
       app.post('/saidSomething', (req, res) => {
         // console.log(req.body.SpeechResult)
-        var twimlResponse = new VoiceResponse();
+        // var twimlResponse = new VoiceResponse();
         const yesOrNo = req.body.SpeechResult;  
         if (yesOrNo === 'No.'){
           twimlResponse.say('You said no, how disappointing');
@@ -99,7 +100,7 @@ module.exports = function(app) {
         } else {
           twimlResponse.say('I did not understand you')
         }
-        twimlResponse.hangup();
+        // twimlResponse.hangup();
         res.end(req.body.SpeechResult)
     })
 };
