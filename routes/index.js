@@ -4,7 +4,16 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var twilio = require('twilio');
 var VoiceResponse = twilio.twiml.VoiceResponse;
-var config = require('../config');
+if (process.env.PORT){
+  var config = {
+  accountSid: process.env.accountSid,
+  authToken: process.env.authToken,
+  twilioNumber: process.env.twilioNumber
+  }
+} else {
+  var config = require('../config');
+}
+
 
 
 // Create a Twilio REST API client for authenticated requests to Twilio
