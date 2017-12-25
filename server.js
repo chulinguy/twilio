@@ -7,7 +7,8 @@ var config = require('./config');
 var app = express();
 var port = process.env.PORT || 3000;
 
-require('/routes')(app);
+app.use(express.static("public"));
+require('./routes')(app);
 
 app.get('*', function (request, response){
   response.redirect('/');
