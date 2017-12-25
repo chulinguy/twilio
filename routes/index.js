@@ -72,7 +72,7 @@ module.exports = function(app) {
         const timeout = 4;  
         // console.log('got to outbound route')
         twimlResponse.say("Welcome to Chi's Twilio testing app");
-        response.gather({
+        twimlResponse.gather({
           hints: 'yes, no',
           input: 'speech',
           timeout: timeout,
