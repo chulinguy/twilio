@@ -95,9 +95,9 @@ module.exports = function(app) {
         if (yesOrNo === 'No.'){
           twimlResponse.say('You said no, how disappointing');
         } else {
-          twimlResponse.say(`You said ${yesOrNo}`);
+          twimlResponse.say(`You said ${yesOrNo}, how exciting! Yay yay yay!`);
         }
         twimlResponse.hangup();
-        res.end(req.boy.SpeechResult)
+        res.end(req.body.SpeechResult)
     })
 };
