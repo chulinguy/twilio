@@ -71,7 +71,7 @@ module.exports = function(app) {
         const twimlResponse = new VoiceResponse();
         const timeout = 4;  
         // console.log('got to outbound route')
-        twimlResponse.say("Welcome to Chi's Twilio testing app");
+        twimlResponse.say("Chi-bot is excited to talk to you, are you excited?");
         twimlResponse.gather({
           hints: 'yes, no',
           input: 'speech',
@@ -89,8 +89,15 @@ module.exports = function(app) {
       });
       
       app.post('/saidSomething', (req, res) => {
-        console.log('req.SpeechResult is', req.SpeechResult)
-        console.log(req)
-        res.end(req.SpeechResult)
+        console.log(req.body.SpeechResult)
+        const twimlResponse = new VoiceResponse();
+        const yesOrNo = req.body.SpeechResult;  
+        if (yesOrNo === 'No.'){
+          twimlResponse.say('You said no, how disappointing');
+        } else {
+          twimlResponse.say(`You said ${yesOrNo}`);
+        }
+        twimlResponse.hangup();
+        res.end(req.boy.SpeechResult)
     })
 };
