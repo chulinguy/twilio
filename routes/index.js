@@ -68,7 +68,7 @@ module.exports = function(app) {
 
     // Return TwiML instuctions for the outbound call
     app.post('/outbound/:twilioNumber', function(request, response) {
-        const twimlResponse = new VoiceResponse();
+        var twimlResponse = new VoiceResponse();
         const timeout = 4;  
         // console.log('got to outbound route')
         twimlResponse.say("Chi-bot is excited to talk to you, are you excited?");
@@ -90,12 +90,17 @@ module.exports = function(app) {
       
       app.post('/saidSomething', (req, res) => {
         console.log(req.body.SpeechResult)
-        const twimlResponse = new VoiceResponse();
+        var twimlResponse = new VoiceResponse();
         const yesOrNo = req.body.SpeechResult;  
         if (yesOrNo === 'No.'){
+          console.log('oh no')
           twimlResponse.say('You said no, how disappointing');
+        } else if (yesOrNo = 'Yes.'){
+          console.log('oh yes')
+          twimlResponse.say(`You said yes, how exciting! Yay yay yay!`);
         } else {
-          twimlResponse.say(`You said ${yesOrNo}, how exciting! Yay yay yay!`);
+          console.log('I dont get it')
+          twimlResponse.say('I did not understand you')
         }
         twimlResponse.hangup();
         res.end(req.body.SpeechResult)
