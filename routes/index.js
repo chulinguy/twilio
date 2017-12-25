@@ -78,7 +78,6 @@ module.exports = function(app) {
           timeout: timeout,
           action:'/saidSomething'
         }).say('Please say Yes, or, No.')
-        console.log('not showing')
         twimlResponse.say(`No response given in ${timeout} seconds `);
         twimlResponse.hangup();
         // twimlResponse.redirect({
@@ -93,14 +92,14 @@ module.exports = function(app) {
         // console.log(req.body.SpeechResult)
         // var twimlResponse = new VoiceResponse();
         const yesOrNo = req.body.SpeechResult;  
-        if (yesOrNo === 'No.'){
-          twimlResponse.say('You said no, how disappointing');
-        } else if (yesOrNo === 'Yes.'){
-          twimlResponse.say(`You said yes, how exciting! Yay yay yay!`);
-        } else {
-          twimlResponse.say('I did not understand you')
-        }
+        // if (yesOrNo === 'No.'){
+        //   twimlResponse.say('You said no, how disappointing');
+        // } else if (yesOrNo === 'Yes.'){
+        //   twimlResponse.say(`You said yes, how exciting! Yay yay yay!`);
+        // } else {
+        //   twimlResponse.say('I did not understand you')
+        // }
         // twimlResponse.hangup();
-        res.end(req.body.SpeechResult)
+        response.send(twimlResponse.toString());
     })
 };
