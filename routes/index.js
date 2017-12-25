@@ -67,11 +67,11 @@ module.exports = function(app) {
     });
 
     // Return TwiML instuctions for the outbound call
-    app.post('/outbound/:twilioNumber', function(request, response) {
+    app.post('/outbound/:twilioNumber', function(req, res) {
         var twimlResponse = new VoiceResponse();
         const timeout = 4;  
         // console.log('got to outbound route')
-        twimlResponse.say("Chi-bot is excited to talk to you, are you excited?");
+        twimlResponse.say("Hello There! Chee-bot is excited to talk to you, are you excited?");
         twimlResponse.gather({
           hints: 'yes, no',
           input: 'speech',
@@ -82,24 +82,26 @@ module.exports = function(app) {
         twimlResponse.hangup();
         // twimlResponse.redirect({
         //   method:'POST'
-        // }, '/outbound/123')
+        // }, '/outbound/123')                                                              
 
-        console.log("outbound", twimlResponse.toString());
-        response.send(twimlResponse.toString());
+        // console.log("outbound", twimlResponse.toString());
+        res.type('text/xml');
+        res.send(twimlResponse.toString());
       });
       
-      app.post('/saidSomething', (req, res) => {
-        // console.log(req.body.SpeechResult)
-        var twimlResponse = new VoiceResponse();
-        const yesOrNo = req.body.SpeechResult;  
-        // if (yesOrNo === 'No.'){
-        //   twimlResponse.say('You said no, how disappointing');
-        // } else if (yesOrNo === 'Yes.'){
-        //   twimlResponse.say(`You said yes, how exciting! Yay yay yay!`);
-        // } else {
-        //   twimlResponse.say('I did not understand you')
-        // }
-        // twimlResponse.hangup();
-        res.send(twimlResponse.toString());
-    })
+    app.post('/saidSomething', (req, res) => {
+      // console.log(req.body.SpeechResult)
+      var twimlResponse = new VoiceResponse();
+      const yesOrNo = req.body.SpeechResult;  
+      if (yesOrNo === 'No.'){
+        twimlResponse.say('You said no, how disappointing');
+      } else if (yesOrNo === 'Yes.'){
+        twimlResponse.say(`You said yes, how exciting! Yay yay yay!`);
+      } else {
+        twimlResponse.say('I did not understand you')
+      }
+
+      res.type('text/xml');
+      res.send(twimlResponse.toString());
+  })
 };
